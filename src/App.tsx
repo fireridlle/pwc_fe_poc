@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { Order } from './Order';
 
-function App() {
+import 'react18-json-view/src/style.css';
+
+export const App: React.FC = () => {
+  const [orderUuid, setOrderUuid] = useState<string | null>();
+
+  const { search } = window.location;
+
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    setOrderUuid(params.get('orderUuid'));
+  }, [search]);
+
+  if (!orderUuid) {
+    return <div>No orderUuid query param</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ margin: 10 }}>
+      <Order orderUuid={orderUuid} />
     </div>
   );
-}
+};
 
 export default App;
